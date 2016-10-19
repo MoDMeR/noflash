@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "build:app": "fly buildApp",
+    "build:sass": "fly buildSass",
+    "dev": "fly"
+  },
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.8.0",
+    "babel-preset-es2017": "^6.16.0",
+    "browser-sync": "^2.17.3",
+    "choo": "^3.3.0",
+    "classnames": "^2.2.5",
+    "fly": "^1.4.1",
+    "fly-esnext": "^1.0.1",
+    "fly-rollup": "^1.0.0",
+    "fly-sass": "^1.0.0",
+    "immutable": "^3.8.1",
+    "lol-champions": "^0.4.0",
+    "lol-spells": "^0.3.1",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-json": "^2.0.2",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "sass-dry": "^0.3.0",
+    "uniqueid": "^1.0.0",
+    "whatwg-fetch": "^1.0.0",
+    "xtend": "^4.0.1"
+  }
+}

@@ -1,0 +1,19 @@
+.ennemy-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  > .role {
+    margin-top: 1rem;
+    font-size: 2rem;
+    line-height: 1;
+    color: #C6C6C6;
+  }
+
+  > .champion {
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #717171;
+  }
+}

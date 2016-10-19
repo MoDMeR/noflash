@@ -1,0 +1,71 @@
+@mixin absolute($top: 0, $left: 0, $width: 100%, $height: 100%) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  width: $width;
+  height: $height;
+}
+
+@mixin absolute-right($top: 0, $right: 0, $width: 100%, $height: 100%) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  width: $width;
+  height: $height;
+}
+
+@mixin pseudo-element($which) {
+  &::#{$which} {
+    content: '';
+
+    @include dry(pseudo-element) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    @content;
+  }
+}
+
+@mixin after() {
+  @include pseudo-element(after) {
+    @content;
+  }
+}
+
+@mixin before() {
+  @include pseudo-element(before) {
+    @content;
+  }
+}
+
+@mixin state($name) {
+  @at-root .-#{$name}#{&} {
+    @content;
+  }
+}
+
+@mixin parentState($name) {
+  @include dry-set(enabled, false);
+
+  .#{$name} & {
+    @content;
+  }
+
+  @include dry-set(enabled, true);
+}
+
+@mixin modifier($name) {
+  &.#{$name} {
+    @content;
+  }
+}
+
+@mixin variant($name) {
+  @at-root .-#{$name}#{&} {
+    @content;
+  }
+}

@@ -1,0 +1,10 @@
+.ennemy-list {
+  display: flex;
+  flex-direction: column;
+  margin: -.35rem 0;
+
+  > .ennemy-item {
+    flex: 1;
+    margin: .35rem 0;
+  }
+}

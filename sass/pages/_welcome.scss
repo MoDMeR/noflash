@@ -1,0 +1,14 @@
+.welcome-page {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.4rem;
+  background: linear-gradient(rgba(92, 71, 101, .9) 0%, #180D1E 100%), url(images/bg.png);
+
+  > .welcome-header {
+    flex: 2;
+  }
+
+  > .welcome-form {
+    flex: 1;
+  }
+}

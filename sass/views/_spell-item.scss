@@ -1,0 +1,54 @@
+.spell-item {
+  > .icon {
+    width: 100%;
+    height: 100%;
+    stroke-width: 3;
+    opacity: 1;
+
+    @include variant(flash) {
+      stroke: #ffb72c;
+      fill: rgba(#ffb72c, .2);
+    }
+
+    @include variant(dot) {
+      stroke: #fe603a;
+      fill: rgba(#fe603a, .2);
+    }
+
+    @include variant(teleport) {
+      stroke: #ce64b4;
+      fill: rgba(#ce64b4, .2);
+    }
+
+    @include variant(heal) {
+      stroke: #88c800;
+      fill: rgba(#88c800, .2);
+    }
+
+    @include variant(haste) {
+      stroke: #3dbfd9;
+      fill: rgba(#3dbfd9, .2);
+    }
+
+    @include variant(exhaust) {
+      stroke: #cb6412;
+      stroke-width: 4;
+      fill: rgba(#cb6412, .2);
+    }
+
+    @include variant(barrier) {
+      stroke: #f8e71c;
+      fill: rgba(#f8e71c, .2);
+    }
+
+    @include variant(smite) {
+      stroke: #cb6412;
+      stroke-width: 4;
+      fill: rgba(#cb6412, .2);
+    }
+
+    @include state(unknown) {
+      opacity: .4;
+    }
+  }
+}

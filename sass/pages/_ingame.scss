@@ -1,0 +1,10 @@
+.ingame-page {
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem;
+  background: #000;
+
+  > .ennemy-list {
+    flex: 1;
+  }
+}
