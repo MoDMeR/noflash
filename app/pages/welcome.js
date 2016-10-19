@@ -1,10 +1,10 @@
 import html from 'choo/html'
 
-const handleInput = (send) => (e) => {
+const handleInput = (e, state, send) => {
   send('game:summoner', e.target.value)
 }
 
-const handleClick = (send) => (e) => {
+const handleClick = (e, state, send) => {
   send('game:fetch')
 }
 
@@ -17,9 +17,14 @@ export default (state, prev, send) => html`
     <div class="welcome-form">
       <label class="label">
         Summoner name
-        <input class="input" value="ngrygod" oninput=${handleInput(send)} />
+        <input
+          class="input"
+          value="ngrygod"
+          oninput=${e => handleInput(e, state, send)} />
       </label>
-      <button class="submit" onclick=${handleClick(send)}>Start</button>
+      <button
+        class="submit"
+        onclick=${e => handleClick(e, state, send)}>Start</button>
     </div>
     <div class="error">${state.app.error}</div>
   </main>
