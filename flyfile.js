@@ -39,7 +39,9 @@ export async function buildApp() {
       },
       bundle: {
         moduleName: 'noflash',
-        format: 'iife'
+        format: 'iife',
+        sourceMap: true,
+        sourceMapFile: path.resolve(paths.dist, 'index.js')
       }
     })
     .target(paths.dist)
