@@ -1,8 +1,8 @@
-import assign from 'deep-assign'
 import fetch from 'whatwg-fetch'
 import champions from 'lol-champions'
 import spells from 'lol-spells'
 import uniqueid from 'uniqueid'
+import xtend from 'xtend'
 
 const uid = uniqueid()
 
@@ -40,10 +40,12 @@ export const fetchSummoner = (name) => {
 
 const createSpell = (id) => {
   const spell = spells.find(s => s.id === id)
-  return assign({
+  return xtend({}, spell, {
     uid: uid(),
-    state: 'available'
-  }, spell)
+    state: 'available',
+    cooldown: 0,
+    refCooldown: spell.cooldown
+  })
 }
 
 export const fetchEnnemies = (summoner) => {

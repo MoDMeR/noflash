@@ -1,11 +1,11 @@
 .spell-list {
   display: flex;
   align-items: center;
-  margin: 0 -1rem;
+  margin: 0 -.5rem;
 
   > .spell-item {
-    margin: 0 1rem;
-    width: 10vh;
-    height: 10vh;
+    margin: 0 .5rem;
+    width: 12vh;
+    height: 12vh;
   }
 }

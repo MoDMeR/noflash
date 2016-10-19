@@ -48,22 +48,6 @@
   }
 }
 
-@mixin parentState($name) {
-  @include dry-set(enabled, false);
-
-  .#{$name} & {
-    @content;
-  }
-
-  @include dry-set(enabled, true);
-}
-
-@mixin modifier($name) {
-  &.#{$name} {
-    @content;
-  }
-}
-
 @mixin variant($name) {
   @at-root .-#{$name}#{&} {
     @content;

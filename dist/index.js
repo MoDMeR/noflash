@@ -2660,11 +2660,20 @@ function extend() {
     return target
 }
 
+const decrementCooldown = (spell, amount) => {
+  const newSpell = immutable({}, spell, { cooldown: spell.cooldown - amount });
+  if (newSpell.cooldown <= 0) {
+    newSpell.cooldown = 0;
+    newSpell.state = 'available';
+  }
+  return newSpell;
+};
+
 const summoner = (data, state) => ({ summoner: data });
 
 const ennemies = (data, state) => ({ ennemies: data });
 
-const update = (data, state) => ({
+const updateSpell = (data, state) => ({
   ennemies: state.ennemies.map(ennemy => {
     ennemy.spells = ennemy.spells.map(spell => {
       if (spell.uid === data.uid) {
@@ -2676,84 +2685,37 @@ const update = (data, state) => ({
   })
 });
 
+const decrementSpellCooldown = (data, state) => ({
+  ennemies: state.ennemies.map(ennemy => {
+    ennemy.spells = ennemy.spells.map(spell => {
+      if (spell.uid === data.uid && 'cooldown' === spell.state) {
+        return decrementCooldown(spell, data.amount);
+      }
+      return spell;
+    });
+    return ennemy;
+  })
+});
+
+const decrementAllSpellsCooldown = (amount, state) => ({
+  ennemies: state.ennemies.map(ennemy => {
+    ennemy.spells = ennemy.spells.map(spell => {
+      if ('cooldown' === spell.state) {
+        return decrementCooldown(spell, amount);
+      }
+      return spell;
+    });
+    return ennemy;
+  })
+});
+
 var reducers = Object.freeze({
   summoner: summoner,
   ennemies: ennemies,
-  update: update
+  updateSpell: updateSpell,
+  decrementSpellCooldown: decrementSpellCooldown,
+  decrementAllSpellsCooldown: decrementAllSpellsCooldown
 });
-
-var __moduleExports = function (x) {
-	var type = typeof x;
-	return x !== null && (type === 'object' || type === 'function');
-};
-
-var isObj = __moduleExports;
-var hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Sources cannot be null or undefined');
-	}
-
-	return Object(val);
-}
-
-function assignKey(to, from, key) {
-	var val = from[key];
-
-	if (val === undefined || val === null) {
-		return;
-	}
-
-	if (hasOwnProperty$1.call(to, key)) {
-		if (to[key] === undefined || to[key] === null) {
-			throw new TypeError('Cannot convert undefined or null to object (' + key + ')');
-		}
-	}
-
-	if (!hasOwnProperty$1.call(to, key) || !isObj(val)) {
-		to[key] = val;
-	} else {
-		to[key] = assign(Object(to[key]), from[key]);
-	}
-}
-
-function assign(to, from) {
-	if (to === from) {
-		return to;
-	}
-
-	from = Object(from);
-
-	for (var key in from) {
-		if (hasOwnProperty$1.call(from, key)) {
-			assignKey(to, from, key);
-		}
-	}
-
-	if (Object.getOwnPropertySymbols) {
-		var symbols = Object.getOwnPropertySymbols(from);
-
-		for (var i = 0; i < symbols.length; i++) {
-			if (propIsEnumerable.call(from, symbols[i])) {
-				assignKey(to, from, symbols[i]);
-			}
-		}
-	}
-
-	return to;
-}
-
-var index = function deepAssign(target) {
-	target = toObject(target);
-
-	for (var s = 1; s < arguments.length; s++) {
-		assign(target, arguments[s]);
-	}
-
-	return target;
-};
 
 (function(self) {
   'use strict';
@@ -8365,7 +8327,7 @@ var spells = [
  * @param suffix {string}
  * @returns {Function}
  */
-var index$1 = function (prefix, suffix) {
+var index = function (prefix, suffix) {
   var id = 0
 
   prefix = prefix || ''
@@ -8376,7 +8338,7 @@ var index$1 = function (prefix, suffix) {
   }
 }
 
-const uid = index$1();
+const uid = index();
 
 const apiKey = '81d00796-d2a2-4e8e-b112-2c20c7ef60c0';
 const baseUrl = 'https://euw.api.pvp.net';
@@ -8412,10 +8374,12 @@ const fetchSummoner = name => {
 
 const createSpell = id => {
   const spell = spells.find(s => s.id === id);
-  return index({
+  return immutable({}, spell, {
     uid: uid(),
-    state: 'available'
-  }, spell);
+    state: 'available',
+    cooldown: 0,
+    refCooldown: spell.cooldown
+  });
 };
 
 const fetchEnnemies = summoner => {
@@ -8636,16 +8600,27 @@ var effects = Object.freeze({
   fetch: fetch
 });
 
+const tick = (send, done) => {
+  setInterval(() => {
+    send('game:decrementAllSpellsCooldown', 1, done);
+  }, 1000);
+};
+
+var subscriptions = Object.freeze({
+  tick: tick
+});
+
 var gameModel = {
   namespace: 'game',
   state: { summoner: '', ennemies: [] },
   reducers,
-  effects
+  effects,
+  subscriptions
 };
 
 var slice = Array.prototype.slice
 
-var __moduleExports$6 = iterativelyWalk
+var __moduleExports$5 = iterativelyWalk
 
 function iterativelyWalk(nodes, cb) {
     if (!('length' in nodes)) {
@@ -8668,7 +8643,7 @@ function iterativelyWalk(nodes, cb) {
     }
 }
 
-var __moduleExports$7 = Comment$1
+var __moduleExports$6 = Comment$1
 
 function Comment$1(data, owner) {
     if (!(this instanceof Comment$1)) {
@@ -8688,7 +8663,7 @@ Comment$1.prototype.toString = function _Comment_toString() {
     return "[object Comment]"
 }
 
-var __moduleExports$8 = DOMText$1
+var __moduleExports$7 = DOMText$1
 
 function DOMText$1(value, owner) {
     if (!(this instanceof DOMText$1)) {
@@ -8716,7 +8691,7 @@ DOMText$1.prototype.replaceData = function replaceData(index, length, value) {
     this.length = this.data.length
 }
 
-var __moduleExports$10 = dispatchEvent$2
+var __moduleExports$9 = dispatchEvent$2
 
 function dispatchEvent$2(ev) {
     var elem = this
@@ -8748,7 +8723,7 @@ function dispatchEvent$2(ev) {
     }
 }
 
-var __moduleExports$11 = addEventListener$2
+var __moduleExports$10 = addEventListener$2
 
 function addEventListener$2(type, listener) {
     var elem = this
@@ -8766,7 +8741,7 @@ function addEventListener$2(type, listener) {
     }
 }
 
-var __moduleExports$12 = removeEventListener$2
+var __moduleExports$11 = removeEventListener$2
 
 function removeEventListener$2(type, listener) {
     var elem = this
@@ -8786,7 +8761,7 @@ function removeEventListener$2(type, listener) {
     }
 }
 
-var __moduleExports$13 = serializeNode$1
+var __moduleExports$12 = serializeNode$1
 
 var voidElements = ["area","base","br","col","embed","hr","img","input","keygen","link","menuitem","meta","param","source","track","wbr"];
 
@@ -8926,15 +8901,15 @@ function escapeAttributeValue(str) {
     return escapeText(str).replace(/"/g, "&quot;")
 }
 
-var domWalk$1 = __moduleExports$6
-var dispatchEvent$1 = __moduleExports$10
-var addEventListener$1 = __moduleExports$11
-var removeEventListener$1 = __moduleExports$12
-var serializeNode = __moduleExports$13
+var domWalk$1 = __moduleExports$5
+var dispatchEvent$1 = __moduleExports$9
+var addEventListener$1 = __moduleExports$10
+var removeEventListener$1 = __moduleExports$11
+var serializeNode = __moduleExports$12
 
 var htmlns = "http://www.w3.org/1999/xhtml"
 
-var __moduleExports$9 = DOMElement$1
+var __moduleExports$8 = DOMElement$1
 
 function DOMElement$1(tagName, owner, namespace) {
     if (!(this instanceof DOMElement$1)) {
@@ -9136,9 +9111,9 @@ DOMElement$1.prototype.contains = function _Element_contains(element) {
     }) || false
 }
 
-var DOMElement$2 = __moduleExports$9
+var DOMElement$2 = __moduleExports$8
 
-var __moduleExports$14 = DocumentFragment$1
+var __moduleExports$13 = DocumentFragment$1
 
 function DocumentFragment$1(owner) {
     if (!(this instanceof DocumentFragment$1)) {
@@ -9165,7 +9140,7 @@ DocumentFragment$1.prototype.toString =
         }).join("")
     }
 
-var __moduleExports$15 = Event$1
+var __moduleExports$14 = Event$1
 
 function Event$1(family) {}
 
@@ -9179,18 +9154,18 @@ Event$1.prototype.preventDefault = function _Event_preventDefault() {
     
 }
 
-var domWalk = __moduleExports$6
+var domWalk = __moduleExports$5
 
-var Comment = __moduleExports$7
-var DOMText = __moduleExports$8
-var DOMElement = __moduleExports$9
-var DocumentFragment = __moduleExports$14
-var Event = __moduleExports$15
-var dispatchEvent = __moduleExports$10
-var addEventListener = __moduleExports$11
-var removeEventListener = __moduleExports$12
+var Comment = __moduleExports$6
+var DOMText = __moduleExports$7
+var DOMElement = __moduleExports$8
+var DocumentFragment = __moduleExports$13
+var Event = __moduleExports$14
+var dispatchEvent = __moduleExports$9
+var addEventListener = __moduleExports$10
+var removeEventListener = __moduleExports$11
 
-var __moduleExports$5 = Document$1;
+var __moduleExports$4 = Document$1;
 
 function Document$1() {
     if (!(this instanceof Document$1)) {
@@ -9252,14 +9227,14 @@ proto.removeEventListener = removeEventListener
 proto.addEventListener = addEventListener
 proto.dispatchEvent = dispatchEvent
 
-var Document = __moduleExports$5;
+var Document = __moduleExports$4;
 
-var __moduleExports$4 = new Document();
+var __moduleExports$3 = new Document();
 
-var __moduleExports$3 = createCommonjsModule(function (module) {
+var __moduleExports$2 = createCommonjsModule(function (module) {
 var topLevel = typeof commonjsGlobal !== 'undefined' ? commonjsGlobal :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __moduleExports$4;
+var minDoc = __moduleExports$3;
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -9274,7 +9249,7 @@ if (typeof document !== 'undefined') {
 }
 });
 
-var __moduleExports$17 = attributeToProperty
+var __moduleExports$16 = attributeToProperty
 
 var transform = {
   'class': 'className',
@@ -9294,7 +9269,7 @@ function attributeToProperty (h) {
   }
 }
 
-var attrToProp = __moduleExports$17
+var attrToProp = __moduleExports$16
 
 var VAR = 0;
 var TEXT = 1;
@@ -9309,7 +9284,7 @@ var ATTR_VALUE_SQ = 9;
 var ATTR_VALUE_DQ = 10;
 var ATTR_EQ = 11;
 var ATTR_BREAK = 12;
-var __moduleExports$16 = function (h, opts) {
+var __moduleExports$15 = function (h, opts) {
   h = attrToProp(h)
   if (!opts) opts = {}
   var concat = opts.concat || function (a, b) {
@@ -9562,7 +9537,7 @@ var closeRE = RegExp('^(' + [
 ].join('|') + ')(?:[\.#][a-zA-Z0-9\u007F-\uFFFF_:-]+)*$')
 function selfClosing (tag) { return closeRE.test(tag) }
 
-var __moduleExports$19 = createCommonjsModule(function (module) {
+var __moduleExports$18 = createCommonjsModule(function (module) {
 if (typeof window !== "undefined") {
     module.exports = window;
 } else if (typeof commonjsGlobal !== "undefined") {
@@ -9575,8 +9550,8 @@ if (typeof window !== "undefined") {
 });
 
 /* global MutationObserver */
-var document$2 = __moduleExports$3
-var window$1 = __moduleExports$19
+var document$2 = __moduleExports$2
+var window$1 = __moduleExports$18
 var watch = Object.create(null)
 var KEY_ID = 'onloadid' + (new Date() % 9e6).toString(36)
 var KEY_ATTR = 'data-' + KEY_ID
@@ -9603,7 +9578,7 @@ if (window$1 && window$1.MutationObserver) {
   })
 }
 
-var __moduleExports$18 = function onload (el, on, off, caller) {
+var __moduleExports$17 = function onload (el, on, off, caller) {
   on = on || function () {}
   off = off || function () {}
   el.setAttribute(KEY_ATTR, 'o' + INDEX)
@@ -9662,9 +9637,9 @@ function eachMutation (nodes, fn) {
   }
 }
 
-var document$1 = __moduleExports$3
-var hyperx = __moduleExports$16
-var onload = __moduleExports$18
+var document$1 = __moduleExports$2
+var hyperx = __moduleExports$15
+var onload = __moduleExports$17
 
 var SVGNS = 'http://www.w3.org/2000/svg'
 var XLINKNS = 'http://www.w3.org/1999/xlink'
@@ -9806,10 +9781,10 @@ function belCreateElement (tag, props, children) {
   return el
 }
 
-var __moduleExports$2 = hyperx(belCreateElement)
+var __moduleExports$1 = hyperx(belCreateElement)
 var createElement = belCreateElement
 
-__moduleExports$2.createElement = createElement;
+__moduleExports$1.createElement = createElement;
 
 // Create a range object for efficently rendering strings to elements.
 var range;
@@ -10460,9 +10435,9 @@ function morphdom$1(fromNode, toNode, options) {
     return morphedNode;
 }
 
-var __moduleExports$20 = morphdom$1;
+var __moduleExports$19 = morphdom$1;
 
-var __moduleExports$21 = [
+var __moduleExports$20 = [
   // attribute events (can be set with attributes)
   'onclick',
   'ondblclick',
@@ -10499,14 +10474,14 @@ var __moduleExports$21 = [
   'onfocusout'
 ]
 
-var bel = __moduleExports$2 // turns template tag into DOM elements
-var morphdom = __moduleExports$20 // efficiently diffs + morphs two DOM elements
-var defaultEvents = __moduleExports$21 // default events to be copied when dom elements update
+var bel = __moduleExports$1 // turns template tag into DOM elements
+var morphdom = __moduleExports$19 // efficiently diffs + morphs two DOM elements
+var defaultEvents = __moduleExports$20 // default events to be copied when dom elements update
 
-var __moduleExports$1 = bel
+var __moduleExports = bel
 
 // TODO move this + defaultEvents to a new module once we receive more feedback
-var update$1 = function (fromNode, toNode, opts) {
+var update = function (fromNode, toNode, opts) {
   if (!opts) opts = {}
   if (opts.events !== false) {
     if (!opts.onBeforeElUpdated) opts.onBeforeElUpdated = copier
@@ -10536,15 +10511,15 @@ var update$1 = function (fromNode, toNode, opts) {
   }
 }
 
-__moduleExports$1.update = update$1;
+__moduleExports.update = update;
 
-var html = __moduleExports$1
+var html = __moduleExports
 
-const handleInput = send => e => {
+const handleInput = (e, state, send) => {
   send('game:summoner', e.target.value);
 };
 
-const handleClick = send => e => {
+const handleClick = (e, state, send) => {
   send('game:fetch');
 };
 
@@ -10557,15 +10532,20 @@ var welcomePage = ((state, prev, send) => html`
     <div class="welcome-form">
       <label class="label">
         Summoner name
-        <input class="input" value="ngrygod" oninput=${ handleInput(send) } />
+        <input
+          class="input"
+          value="ngrygod"
+          oninput=${ e => handleInput(e, state, send) } />
       </label>
-      <button class="submit" onclick=${ handleClick(send) }>Start</button>
+      <button
+        class="submit"
+        onclick=${ e => handleClick(e, state, send) }>Start</button>
     </div>
     <div class="error">${ state.app.error }</div>
   </main>
 `);
 
-var index$2 = createCommonjsModule(function (module) {
+var index$1 = createCommonjsModule(function (module) {
 /*!
   Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -10617,21 +10597,58 @@ var index$2 = createCommonjsModule(function (module) {
 });
 
 const handleClick$1 = (e, spell, send) => {
-  send('game:update', {
-    uid: spell.uid,
-    state: 'unknown'
-  });
+  if ('cooldown' === spell.state) {
+    send('game:decrementSpellCooldown', {
+      uid: spell.uid,
+      amount: 10
+    });
+  } else {
+    send('game:updateSpell', {
+      uid: spell.uid,
+      state: 'cooldown',
+      cooldown: spell.refCooldown - 100
+    });
+  }
 };
 
-const classVariants = spell => index$2({
+const classVariants = spell => index$1({
   [`-${ spell.id }`]: true,
-  [`-${ spell.state }`]: true
+  [`-${ spell.state }`]: true,
+  [`-time60`]: spell.cooldown <= 60 && spell.cooldown > 30,
+  [`-time30`]: spell.cooldown <= 30 && spell.cooldown > 0
 });
+
+const renderIf = (condition, state, renderer) => condition ? renderer(state) : '';
+
+const drawCooldownPie = spell => {
+  const r = 50;
+  const t = 1 - spell.cooldown / spell.refCooldown;
+  const a = t * Math.PI * 2;
+  const m = a > Math.PI ? 1 : 0;
+  const x = Math.sin(a) * r;
+  const y = Math.cos(a) * -r;
+
+  return html`
+    <g transform=${ `translate(${ r }, ${ r })` }>
+      <path className="timer" d=${ `M 0 ${ -r } A ${ r } ${ r } 1 ${ m } 1 ${ x } ${ y }` }></path>
+    </g>
+  `;
+};
+
+const renderCooldown = spell => html`
+  <svg class="cooldown"
+    viewBox="-5 -5 110 110"
+    vectorEffect="non-scaling-stroke"
+    strokeLinecap="round">
+    ${ drawCooldownPie(spell) }
+  </svg>
+`;
 
 var spellItem = ((spell, prev, send) => html`
   <li
     class="spell-item ${ classVariants(spell) }"
     onclick=${ e => handleClick$1(e, spell, send) }>
+    ${ renderIf('cooldown' === spell.state, spell, renderCooldown) }
     <svg class="icon">
       <use xlink:href="#svg-${ spell.id }">
     </svg>
