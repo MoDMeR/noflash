@@ -1,8 +1,8 @@
 # project
 .nyc_output
 .todo
+build
 coverage
-dist
 
 # node
 node_modules
