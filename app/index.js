@@ -1,4 +1,5 @@
 import choo from 'choo/dist/choo'
+import fastclick from 'fastclick'
 
 import appModel from './models/app'
 import gameModel from './models/game'
@@ -19,3 +20,4 @@ app.router(route => [
 
 const tree = app.start()
 document.body.appendChild(tree)
+fastclick(document.body)

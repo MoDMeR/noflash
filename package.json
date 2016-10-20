@@ -16,6 +16,7 @@
     "choo": "^3.3.0",
     "classnames": "^2.2.5",
     "cordova-lib": "^6.3.1",
+    "fastclick": "^1.0.6",
     "fly": "^1.4.1",
     "fly-esnext": "^1.0.1",
     "fly-rollup": "^1.0.2",
