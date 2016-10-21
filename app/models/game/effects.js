@@ -1,5 +1,5 @@
 import { fetchSummoner, fetchEnnemies } from '../../lib/riot'
-import wrapEffect from '../../lib/wrap-effect'
+import { wrapEffect } from '../../lib/util'
 
 let intervalId
 

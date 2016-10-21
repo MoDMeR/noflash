@@ -1,20 +1,3 @@
-import champions from 'lol-champions'
-import spells from 'lol-spells'
-import uniqueid from 'uniqueid'
-import xtend from 'xtend'
-
-const uid = uniqueid()
-
-const createSpell = (id) => {
-  const spell = spells.find(s => s.id === id)
-  return xtend({}, spell, {
-    uid: uid(),
-    state: 'available',
-    cooldown: 0,
-    refCooldown: spell.cooldown
-  })
-}
-
 export const fetchSummoner = (name) => Promise.resolve({
   id: 72517081,
   name: "ngrygod",
