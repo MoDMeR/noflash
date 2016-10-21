@@ -1,0 +1,9 @@
+.error-pane {
+  @include absolute($top: null, $bottom: 0, $height: 3.25rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(#E4152E, .8);
+  color: rgba(#F58593, .8);
+  font-size: 1.2rem;
+}

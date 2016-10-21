@@ -23,14 +23,14 @@
     "fly": "^1.4.1",
     "fly-esnext": "^1.0.1",
     "fly-sass": "^1.0.0",
-    "lol-champions": "^0.4.0",
-    "lol-spells": "^0.3.1",
+    "lol-champions": "^6.21.1",
+    "lol-spells": "^6.21.1",
     "mkdirp-then": "^1.2.0",
     "phonegap": "^6.3.4",
+    "ponyfetch": "^1.0.1",
     "sass-dry": "^0.3.0",
     "unassertify": "^2.0.3",
     "uniqueid": "^1.0.0",
-    "whatwg-fetch": "^1.0.0",
     "xtend": "^4.0.1"
   }
 }

@@ -1,5 +1,6 @@
 import html from 'choo/html'
 import classnames from 'classnames'
+import { renderIf } from '../lib/util'
 
 const handleClick = (e, spell, send) => {
   if ('cooldown' === spell.state) {
@@ -12,7 +13,7 @@ const handleClick = (e, spell, send) => {
     send('game:updateSpell', {
       uid: spell.uid,
       state: 'cooldown',
-      cooldown: spell.refCooldown - 100
+      cooldown: spell.refCooldown - 1
     })
   }
 }
@@ -21,12 +22,8 @@ const classVariants = (spell) => classnames({
   [`-${spell.id}`]: true,
   [`-${spell.state}`]: true,
   [`-time60`]: spell.cooldown <= 60 && spell.cooldown > 30,
-  [`-time30`]: spell.cooldown <= 30 && spell.cooldown > 0,
+  [`-time30`]: spell.cooldown <= 30 && spell.cooldown > 0
 })
-
-const renderIf = (condition, state, renderer) => condition
-  ? renderer(state)
-  : ''
 
 const drawCooldownPie = (spell) => {
   const r = 50

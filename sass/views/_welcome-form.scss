@@ -29,5 +29,23 @@
     font-size: 1.6rem;
     text-transform: uppercase;
     color: #625758;
+
+    @include variant(loading) {
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: #E2BD98;
+      width: 3.25rem;
+      background: transparent;
+      color: transparent;
+      animation: welcome-load 1s linear infinite;
+    }
+  }
+}
+
+@keyframes welcome-load {
+  100% {
+    transform: rotate(360deg);
   }
 }
