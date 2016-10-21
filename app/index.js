@@ -1,4 +1,4 @@
-import choo from 'choo/dist/choo'
+import choo from 'choo'
 import fastclick from 'fastclick'
 
 import appModel from './models/app'

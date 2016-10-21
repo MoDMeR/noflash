@@ -1,3 +1,4 @@
+import browserify from 'browserify'
 import browserSync from 'browser-sync'
 import mkdirp from 'mkdirp-then'
 import path from 'path'
@@ -27,26 +28,32 @@ export async function build() {
 export async function buildApp() {
   await this
     .source(paths.appEntry)
-    .rollup({
-      rollup: {
-        plugins: [
-          require('rollup-plugin-babel')({
-            presets: [ ['es2015', { modules: false }], 'es2017' ],
-            plugins: [ 'transform-runtime' ],
-            exclude: 'node_modules/**',
-            runtimeHelpers: true
-          }),
-          require('rollup-plugin-node-resolve')(),
-          require('rollup-plugin-commonjs')(),
-          require('rollup-plugin-json')()
+    // XXX: wait for https://github.com/MadcapJake/fly-browserify/issues/8
+    .filter((source, options) => {
+      const compiler = browserify({
+        plugin: ['bundle-collapser/plugin'],
+        transform: [
+          ['unassertify', { global: true }],
+          ['babelify', {
+            presets: ['es2015', 'es2017'],
+            plugins: ['transform-runtime']
+          }]
         ]
-      },
-      bundle: {
-        moduleName: 'noflash',
-        format: 'iife',
-        sourceMap: true,
-        sourceMapFile: path.resolve(paths.dist, 'index.js')
-      }
+      })
+
+      return new Promise((resolve, reject) => {
+        this.unwrap(files => {
+          files.forEach(file => compiler.add(file))
+          compiler.bundle((err, buf) => {
+            if (err) {
+              reject(err)
+            }
+            else {
+              resolve(buf.toString())
+            }
+          })
+        })
+      })
     })
     .target(paths.dist)
 }
