@@ -24,17 +24,16 @@ export const fetch = wrapEffect(async (summonerName, state, send) => {
   await send('location:setLocation', { location: '/ingame' })
 })
 
-export const timer = (activate, state, send, done) => {
+export const timer = (activate, state, send) => {
   if (activate) {
     if (null == intervalId) {
       intervalId = setInterval(() => {
-        send('game:decrementAllSpellsCooldown', 1, done)
+        send('game:decrementAllSpellsCooldown', 1)
       }, 1000)
     }
   }
   else {
     clearInterval(intervalId)
     intervalId = null
-    done()
   }
 }

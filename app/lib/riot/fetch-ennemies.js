@@ -16,6 +16,14 @@ const createSpell = (id) => {
   })
 }
 
+// TODO
+const findRole = (champion, spells) => {
+  if (spells.some(spell => 'teleport' === spell.id)) return 'mid'
+  if (spells.some(spell => 'exhaust' === spell.id)) return 'support'
+  if (spells.some(spell => 'smite' === spell.id)) return 'jungle'
+  if (spells.some(spell => 'heal' === spell.id)) return 'adc'
+}
+
 export default async (summoner) => {
   const body = await request(
     `/observer-mode/rest/consumer/getSpectatorGameInfo/EUW1/${summoner.id}`)
@@ -32,14 +40,24 @@ export default async (summoner) => {
 
   const ennemies = participants
     .filter(participant => participant.teamId !== summonerTeam)
-    .map(participant => ({
-      summonerName: participant.summonerName,
-      champion: champions.find(c => c.key === String(participant.championId)),
-      spells: [
+    .map(participant => {
+      const champion = champions.find(
+        c => c.key === String(participant.championId))
+
+      const spells = [
         createSpell(participant.spell1Id),
         createSpell(participant.spell2Id)
       ]
-    }))
+
+      const role = findRole(champion, spells)
+
+      return {
+        summonerName: participant.summonerName,
+        role,
+        champion,
+        spells
+      }
+    })
 
   return ennemies
 }
