@@ -1,6 +1,6 @@
 import html from 'choo/html'
 import classnames from 'classnames'
-import { renderIf } from '../lib/util'
+import renderIf from '~/lib/render-if'
 
 const handleClick = (e, spell, send) => {
   if ('cooldown' === spell.state) {

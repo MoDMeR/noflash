@@ -8,8 +8,8 @@ import zip from 'connect-phonegap/lib/middleware/zip'
 const cordova = cordovaLib.raw
 
 const paths = {
-  app: 'app/**/*.js',
-  appEntry: 'app/index.js',
+  app: 'src/**/*.js',
+  appEntry: 'src/index.js',
   assets: 'assets/{,*/}*',
   build: 'build',
   config: 'config.xml',
@@ -31,12 +31,14 @@ export async function buildApp() {
     // XXX: wait for https://github.com/MadcapJake/fly-browserify/issues/8
     .filter((source, options) => {
       const compiler = browserify({
+        debug: true,
         plugin: ['bundle-collapser/plugin'],
         transform: [
           ['unassertify', { global: true }],
+          [ 'uglifyify', { global: true }],
           ['babelify', {
-            presets: ['es2015', 'es2017'],
-            plugins: ['transform-runtime']
+            presets: ['es2015'],
+            plugins: ['root-import']
           }]
         ]
       })
@@ -46,7 +48,7 @@ export async function buildApp() {
           files.forEach(file => compiler.add(file))
           compiler.bundle((err, buf) => {
             if (err) {
-              reject(err)
+              reject(err.message)
             }
             else {
               resolve(buf.toString())

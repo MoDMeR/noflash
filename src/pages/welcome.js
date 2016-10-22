@@ -1,20 +1,16 @@
 import html from 'choo/html'
 import classnames from 'classnames'
-import { renderIf } from '../lib/util'
+import renderIf from '~/lib/render-if'
 
 const handleSubmit = (e, state, send) => {
   e.preventDefault()
 
   if (state.game.summoner) {
-    send('game:fetch', state.game.summoner)
+    send('game:fetch', { name: state.game.summoner })
   }
   else {
-    send('app:error', new Error('Empty summoner name'))
+    send('app:error', 'Empty summoner name')
   }
-}
-
-const handleFocus = (e, state, send) => {
-  send('app:clearError')
 }
 
 const handleInput = (e, state, send) => {
@@ -42,7 +38,6 @@ export default (state, prev, send) => html`
         <input
           class="input"
           ${state.app.loading ? 'disabled' : ''}
-          onfocus=${e => handleFocus(e, state, send)}
           oninput=${e => handleInput(e, state, send)} />
       </label>
       <button class="submit">Start</button>

@@ -1,5 +1,5 @@
 import html from 'choo/html'
-import ennemyList from '../views/ennemy-list'
+import ennemyList from '~/views/ennemy-list'
 
 const handleLoad = (e, state, send) => {
   send('game:timer', true)

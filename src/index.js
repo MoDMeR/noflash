@@ -1,14 +1,14 @@
 import choo from 'choo'
 import fastclick from 'fastclick'
-
-import appModel from './models/app'
-import gameModel from './models/game'
-
-import welcomePage from './pages/welcome'
-import ingamePage from './pages/ingame'
+import apiModel from '~/models/api'
+import appModel from '~/models/app'
+import gameModel from '~/models/game'
+import welcomePage from '~/pages/welcome'
+import ingamePage from '~/pages/ingame'
 
 const app = choo()
 
+app.model(apiModel)
 app.model(appModel)
 app.model(gameModel)
 

@@ -1,5 +1,5 @@
 import html from 'choo/html'
-import ennemyItem from '../views/ennemy-item'
+import ennemyItem from './ennemy-item'
 
 export default (game, prev, send) => html`
   <ul class="ennemy-list">
