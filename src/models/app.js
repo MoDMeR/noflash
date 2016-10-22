@@ -12,20 +12,18 @@ export default {
   },
   effects: {
     loading: (data, state, send, done) => {
-      send('app:set', { error: '', loading: true }, done)
+      send('app:status', { error: '', loading: true }, done)
     },
     error: (data, state, send, done) => {
-      send('app:set', { error: data.err, loading: false }, done)
+      send('app:status', { error: data.err, loading: false }, done)
 
       clearTimeout(errTimeoutId)
       errTimeoutId = setTimeout(() => {
-        send('app:set', { error: '' }, done)
+        send('app:status', { error: '', loading: false }, done)
       }, 3000)
     }
   },
   reducers: {
-    set: (data, state) => {
-      return xtend(state, data)
-    }
+    status: (data, state) => ({ error: data.error, loading: data.loading })
   }
 }

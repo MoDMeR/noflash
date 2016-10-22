@@ -5,8 +5,8 @@ import renderIf from '~/lib/render-if'
 const handleSubmit = (e, state, send) => {
   e.preventDefault()
 
-  if (state.game.summoner) {
-    send('game:fetch', { name: state.game.summoner })
+  if (state.game.name) {
+    send('game:fetch', state.game.name)
   }
   else {
     send('app:error', 'Empty summoner name')
@@ -14,7 +14,7 @@ const handleSubmit = (e, state, send) => {
 }
 
 const handleInput = (e, state, send) => {
-  send('game:summoner', e.target.value)
+  send('game:name', e.target.value)
 }
 
 const classVariants = (state) => classnames({

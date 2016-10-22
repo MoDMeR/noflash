@@ -1,20 +1,20 @@
 import xtend from 'xtend'
 
-// TODO: nanoraf for timer?
-let intervalId
+let numCooldowns = 0
 
 export default {
   namespace: 'game',
   state: {
+    name: '',
     ennemies: []
   },
   effects: {
-    fetch: (data, state, send, done) => {
+    fetch: (name, state, send, done) => {
       send('app:loading', () => {
-        send('api:summoner', data, (err, summoner) => {
+        send('api:summoner', name, (err, summoner) => {
           if (err) return send('app:error', { err }, done)
 
-          send('api:ennemies', { summoner }, (err, ennemies) => {
+          send('api:ennemies', summoner, (err, ennemies) => {
             if (err) return send('app:error', { err }, done)
 
             send('game:ennemies', ennemies, () => {
@@ -24,64 +24,62 @@ export default {
         })
       })
     },
-    timer: (activate, state, send, done) => {
-      if (activate) {
-        if (null == intervalId) {
-          intervalId = setInterval(() => {
-            send('game:decrementAllSpellsCooldown', 1, done)
-          }, 1000)
-        }
+    cooldown: (spell, state, send, done) => {
+      if ('cooldown' !== spell.state) {
+        numCooldowns++
+        send('game:startCooldown', spell.uid, done)
       }
       else {
-        clearInterval(intervalId)
-        intervalId = null
+        send('game:decrementCooldown', { uid: spell.uid, amount: 10 }, done)
       }
     }
   },
   reducers: {
-    summoner: (data, state) => ({ summoner: data }),
-    ennemies: (data, state) => ({ ennemies: data }),
-    updateSpell: (data, state) => ({
-      ennemies: state.ennemies.map(ennemy => {
-        ennemy.spells = ennemy.spells.map(spell => {
-          if (spell.uid === data.uid) {
-            return xtend({}, spell, data)
+    name: (name, state) => ({ name }),
+    ennemies: (ennemies, state) => ({ ennemies }),
+    startCooldown: (uid, state) => ({
+      ennemies: state.ennemies.map(ennemy => xtend(ennemy, {
+        spells: ennemy.spells.map(spell => {
+          if (spell.uid === uid) {
+            return xtend({}, spell, {
+              state: 'cooldown',
+              cooldown: spell.refCooldown - 1
+            })
           }
-          return spell
+          else {
+            return spell
+          }
         })
-        return ennemy
-      })
+      }))
     }),
-    decrementSpellCooldown: (data, state) => ({
-      ennemies: state.ennemies.map(ennemy => {
-        ennemy.spells = ennemy.spells.map(spell => {
-          if (spell.uid === data.uid && 'cooldown' === spell.state) {
-            return decrementCooldown(spell, data.amount)
-          }
-          return spell
-        })
-        return ennemy
-      })
-    }),
-    decrementAllSpellsCooldown: (amount, state) => ({
-      ennemies: state.ennemies.map(ennemy => {
-        ennemy.spells = ennemy.spells.map(spell => {
-          if ('cooldown' === spell.state) {
-            return decrementCooldown(spell, amount)
-          }
-          return spell
-        })
-        return ennemy
-      })
-    })
-  }
-}
+    decrementCooldown: (data, state) => ({
+      ennemies: state.ennemies.map(ennemy => xtend(ennemy, {
+        spells: ennemy.spells.map(spell => {
+          if ('cooldown' !== spell.state) return spell
+          if (data.uid && spell.uid !== data.uid) return spell
 
-function decrementCooldown(spell, amount) {
-  const newSpell = xtend({}, spell, { cooldown: spell.cooldown - amount })
-  if (newSpell.cooldown <= 0) {
-    newSpell.cooldown = 0
-    newSpell.state = 'available'
+          const newSpell = xtend({}, spell, {
+            cooldown: spell.cooldown - data.amount
+          })
+
+          if (newSpell.cooldown <= 0) {
+            newSpell.cooldown = 0
+            newSpell.state = 'available'
+            numCooldowns--
+          }
+
+          return newSpell
+        })
+      }))
+    })
+  },
+  subscriptions: {
+    tick: (send, done) => {
+      setInterval(() => {
+        if (0 !== numCooldowns) {
+          send('game:decrementCooldown', { amount: 1 }, done)
+        }
+      }, 1000)
+    }
   }
-  return newSpell
 }

@@ -3,19 +3,7 @@ import classnames from 'classnames'
 import renderIf from '~/lib/render-if'
 
 const handleClick = (e, spell, send) => {
-  if ('cooldown' === spell.state) {
-    send('game:decrementSpellCooldown', {
-      uid: spell.uid,
-      amount: 10
-    })
-  }
-  else {
-    send('game:updateSpell', {
-      uid: spell.uid,
-      state: 'cooldown',
-      cooldown: spell.refCooldown - 1
-    })
-  }
+  send('game:cooldown', spell)
 }
 
 const classVariants = (spell) => classnames({

@@ -16,10 +16,9 @@ const uid = uniqueid()
 export default {
   namespace: 'api',
   effects: {
-    request: (data, state, send, done) => {
-      const url = `${proxyUrl}?url=${data.url}`
-
-      return xhr(url,{ json: true }, (err, res, body) => {
+    request: (url, state, send, done) => {
+      return xhr(`${proxyUrl}?url=${url}`, { json: true },
+      (err, res, body) => {
         if (null == body.status) {
           done(null, body)
         }
@@ -28,28 +27,22 @@ export default {
         }
       })
     },
-    summoner: (data, state, send, done) => {
-      const { name } = data
-
-      send('api:request', {
-        url: `${endpoints.summoner}/${data.name}`
-      }, (err, body) => {
+    summoner: (name, state, send, done) => {
+      send('api:request', `${endpoints.summoner}/${name}`,
+      (err, body) => {
         if (403 === err)
           return done('Unknown summoner')
 
-        const summoner = body[data.name.toLowerCase().replace(/ /g, '')]
+        const summoner = body[name.toLowerCase().replace(/ /g, '')]
         if (!summoner)
           return done('No summoner found')
 
         done(null, summoner)
       })
     },
-    ennemies: (data, state, send, done) => {
-      const { summoner } = data
-
-      send('api:request', {
-        url: `${endpoints.ennemies}/${summoner.id}`
-      }, (err, body) => {
+    ennemies: (summoner, state, send, done) => {
+      send('api:request', `${endpoints.ennemies}/${summoner.id}`,
+      (err, body) => {
         if (404 === err)
           return done('No live game found')
 
@@ -63,26 +56,23 @@ export default {
 
         const ennemies = participants
           .filter(participant => participant.teamId !== summonerTeam)
-          .map(participant => {
-            const champion = champions.find(
-              c => c.key === String(participant.championId))
-
-            const spells = [
+          .map(participant => ({
+            name: participant.summonerName,
+            champion: createChampion(participant.championId),
+            spells: [
               createSpell(participant.spell1Id),
               createSpell(participant.spell2Id)
             ]
-
-            return {
-              name: participant.summonerName,
-              champion,
-              spells
-            }
-          })
+          }))
 
         done(null, ennemies)
       })
     }
   }
+}
+
+function createChampion(id) {
+  return champions.find(c => c.key === String(id))
 }
 
 function createSpell(id) {

@@ -16,7 +16,7 @@
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
     "choo": "^3.3.0",
-    "choo-log": "^2.0.1",
+    "choo-log": "1.4.1",
     "classnames": "^2.2.5",
     "cordova-lib": "^6.3.1",
     "fastclick": "^1.0.6",
