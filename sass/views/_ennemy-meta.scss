@@ -1,11 +1,13 @@
 .ennemy-meta {
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   justify-content: center;
 
   > .role {
     margin-top: 1rem;
-    font-size: 2rem;
+    margin-bottom: .3rem;
+    font-size: 1.6rem;
     line-height: 1;
     color: #C6C6C6;
   }

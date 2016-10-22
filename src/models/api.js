@@ -72,11 +72,8 @@ export default {
               createSpell(participant.spell2Id)
             ]
 
-            const role = findRole(champion, spells)
-
             return {
-              summonerName: participant.summonerName,
-              role,
+              name: participant.summonerName,
               champion,
               spells
             }
@@ -96,12 +93,4 @@ function createSpell(id) {
     cooldown: 0,
     refCooldown: spell.cooldown
   })
-}
-
-// TODO
-function findRole(champion, spells) {
-  if (spells.some(spell => 'teleport' === spell.id)) return 'mid'
-  if (spells.some(spell => 'exhaust' === spell.id)) return 'support'
-  if (spells.some(spell => 'smite' === spell.id)) return 'jungle'
-  if (spells.some(spell => 'heal' === spell.id)) return 'adc'
 }
