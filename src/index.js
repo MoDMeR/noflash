@@ -1,5 +1,6 @@
 import choo from 'choo'
 import fastclick from 'fastclick'
+import log from 'choo-log'
 import apiModel from '~/models/api'
 import appModel from '~/models/app'
 import gameModel from '~/models/game'
@@ -7,6 +8,7 @@ import welcomePage from '~/pages/welcome'
 import ingamePage from '~/pages/ingame'
 
 const app = choo()
+app.use(log())
 
 app.model(apiModel)
 app.model(appModel)
