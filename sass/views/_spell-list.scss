@@ -1,11 +1,21 @@
 .spell-list {
   display: flex;
   align-items: center;
-  margin: 0 -.5rem;
+  margin-right: -1rem;
+
+  @include nested-state(focused) {
+    padding: 1rem 0;
+  }
 
   > .spell-item {
-    margin: 0 .5rem;
-    width: 10vh;
-    height: 10vh;
+    margin: 0 1.2rem;
+    width: 3.6rem;
+    height: 3.6rem;
+
+    @include nested-state(focused) {
+      margin: 0 2.4rem;
+      width: 5rem;
+      height: 5rem;
+    }
   }
 }

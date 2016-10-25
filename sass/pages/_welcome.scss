@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   padding: 0 1.4rem;
-  background: linear-gradient(rgba(92, 71, 101, .9) 0%, #180D1E 100%), url(images/bg.png);
+  background:
+    linear-gradient(-45deg, color-get(background1), rgba(color-get(background2), .8)),
+    url(images/bg.png);
 
   > .welcome-header {
     flex: 2;

@@ -1,8 +1,15 @@
 @font-face {
-  font-family: 'Jaapokki';
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Lato'), url(fonts/lato-light.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: local('Jaapokki'), url(fonts/jaapokki.woff) format('woff');
+  src: local('Lato'), url(fonts/lato-regular.woff) format('woff');
 }
 
 @font-face {

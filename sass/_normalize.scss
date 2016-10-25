@@ -15,8 +15,8 @@ body {
   -webkit-user-select: none;      /* prevent copy paste, to allow, change 'none' to 'text' */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-font-smoothing: antialiased;
-  font-family: Jaapokki, sans-serif;
-  font-weight: 100;
+  font-family: Lato, sans-serif;
+  font-weight: 200;
   height: 100%;
   margin: 0;
 }
@@ -27,7 +27,14 @@ main {
 
 h1, h2 {
   margin: 0;
-  font-weight: 400;
+  font-weight: 200;
+}
+
+h1 {
+  text-transform: lowercase;
+}
+
+h2 {
   text-transform: uppercase;
 }
 

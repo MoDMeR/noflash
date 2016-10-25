@@ -6,15 +6,19 @@
 
   > .title {
     margin-top: 0;
-    margin-bottom: .2rem;
-    font-size: 3.2rem;
+    font-size: 6.4rem;
     color: #fff;
+
+    > em {
+      font-style: normal;
+      color: color-get(primary);
+    }
   }
 
   > .tagline {
-    margin: 0;
+    margin: 1rem;
     font-family: ailerons, sans-serif;
     font-size: 1.6rem;
-    color: #897293;
+    color: desaturate(lighten(color-get(background2), 40), 20);
   }
 }

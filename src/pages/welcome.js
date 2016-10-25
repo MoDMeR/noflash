@@ -28,7 +28,7 @@ const renderError = (error) => html`
 export default (state, prev, send) => html`
   <main class="welcome-page">
     <div class="welcome-header">
-      <h1 class="title">${state.app.title}</h1>
+      <h1 class="title"><em>No</em>Flash</h1>
       <blockquote class="tagline">${state.app.tagline}</blockquote>
     </div>
     <form class="welcome-form ${classVariants(state)}"

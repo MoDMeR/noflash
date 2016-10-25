@@ -1,7 +1,34 @@
 .ennemy-item {
   display: flex;
   justify-content: space-between;
-  margin: .35rem 0;
+  border-radius: 4px;
   padding: 1.4rem;
-  background: rgba(#fff, .1);
+  background: rgba(#fff, .05);
+
+  &:not(:last-child) {
+    margin-bottom: .7rem;
+  }
+
+  @include state(focused) {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(#fff, .1);
+  }
+
+  @include state(dragging) {
+    z-index: 1;
+    pointer-events: none;
+    transform: scale(.95);
+    background: rgba(#fff, .9);
+    opacity: .8;
+  }
+
+  > .ennemy-meta {
+    @include variant(dragging) {
+      .champion {
+        color: #000;
+      }
+    }
+  }
 }

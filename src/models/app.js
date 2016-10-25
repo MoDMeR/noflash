@@ -5,7 +5,7 @@ let errTimeoutId
 export default {
   namespace: 'app',
   state: {
-    title: 'No Flash',
+    title: '<em>No</em> Flash',
     tagline: 'Track summoner spells',
     loading: false,
     error: ''

@@ -43,14 +43,34 @@
   }
 }
 
-@mixin state($name) {
-  @at-root .-#{$name}#{&} {
+@mixin state($name, $self: false) {
+  @if $self {
+    &.-#{$name} {
+      @content;
+    }
+  }
+  @else {
+    @at-root .-#{$name}#{&} {
+      @content;
+    }
+  }
+}
+
+@mixin nested-state($name) {
+  @at-root .-#{$name} & {
     @content;
   }
 }
 
-@mixin variant($name) {
-  @at-root .-#{$name}#{&} {
-    @content;
+@mixin variant($name, $self: false) {
+  @if $self {
+    &.-#{$name} {
+      @content;
+    }
+  }
+  @else {
+    @at-root .-#{$name}#{&} {
+      @content;
+    }
   }
 }

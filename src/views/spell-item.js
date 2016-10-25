@@ -22,17 +22,18 @@ const drawCooldownPie = (spell) => {
   const y = Math.cos(a) * -r
 
   return html`
-    <g transform=${`translate(${r}, ${r})`}>
-      <path className="timer" d=${`M 0 ${-r} A ${r} ${r} 1 ${m} 1 ${x} ${y}`}></path>
+    <g transform=${`translate(${r}, ${r})`}
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke">
+      <circle class="progress-bg" cx="0" cy="0" r="50" />
+      <path class="progress" d=${`M 0 ${-r} A ${r} ${r} 1 ${m} 1 ${x} ${y}`}></path>
     </g>
   `
 }
 
 const renderCooldown = (spell) => html`
   <svg class="cooldown"
-    viewBox="-5 -5 110 110"
-    vectorEffect="non-scaling-stroke"
-    strokeLinecap="round">
+    viewBox="-5 -5 110 110">
     ${drawCooldownPie(spell)}
   </svg>
 `

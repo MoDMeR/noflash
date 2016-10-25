@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   padding: .7rem;
-  background: #180D1E;
+  background:
+    linear-gradient(-45deg, color-get(background1), rgba(color-get(background2), .95)),
+    url(images/bg.png);
 
   > .ennemy-list {
     flex: 1;

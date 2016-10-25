@@ -71,6 +71,16 @@ export default {
           return newSpell
         })
       }))
+    }),
+    toggleFocus: (data, state) => ({
+      ennemies: state.ennemies.map(ennemy => {
+        if (ennemy.name === data.name) {
+          return xtend({}, ennemy, { focused: !ennemy.focused })
+        }
+        else {
+          return ennemy
+        }
+      })
     })
   },
   subscriptions: {
