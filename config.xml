@@ -17,5 +17,4 @@
   <plugin name="cordova-plugin-whitelist" />
 
   <preference name="orientation" value="portrait" />
-  <preference name="fullscreen" value="true" />
 </widget>
