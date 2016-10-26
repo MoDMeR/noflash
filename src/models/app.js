@@ -1,3 +1,4 @@
+import store from 'store'
 import xtend from 'xtend'
 
 let errTimeoutId
@@ -8,22 +9,27 @@ export default {
     title: '<em>No</em> Flash',
     tagline: 'Track summoner spells',
     loading: false,
-    error: ''
+    error: '',
+    summoner: store.get('app:summoner') || ''
   },
   effects: {
+    summoner: (summoner, state, send, done) => {
+      store.set('app:summoner', summoner)
+      send('app:set', { summoner }, done)
+    },
     loading: (data, state, send, done) => {
-      send('app:status', { error: '', loading: true }, done)
+      send('app:set', { error: '', loading: true }, done)
     },
     error: (data, state, send, done) => {
-      send('app:status', { error: data.err, loading: false }, done)
+      send('app:set', { error: data.err, loading: false }, done)
 
       clearTimeout(errTimeoutId)
       errTimeoutId = setTimeout(() => {
-        send('app:status', { error: '', loading: false }, done)
+        send('app:set', { error: '', loading: false }, done)
       }, 3000)
     }
   },
   reducers: {
-    status: (data, state) => ({ error: data.error, loading: data.loading })
+    set: (data, state) => xtend(state, data)
   }
 }

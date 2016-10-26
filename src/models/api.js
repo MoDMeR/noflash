@@ -1,5 +1,6 @@
 import champions from 'lol-champions'
 import spells from 'lol-spells'
+import store from 'store'
 import uniqueid from 'uniqueid'
 import xhr from 'xhr'
 import xtend from 'xtend'
@@ -28,6 +29,10 @@ export default {
       })
     },
     summoner: (name, state, send, done) => {
+      const summoner = store.get('api:summoner')
+      if (null != summoner && summoner.name === name)
+        return done(null, summoner)
+
       send('api:request', `${endpoints.summoner}/${name}`,
       (err, body) => {
         if (403 === err || 404 === err)
@@ -36,6 +41,8 @@ export default {
         const summoner = body[name.toLowerCase().replace(/ /g, '')]
         if (!summoner)
           return done('No summoner found')
+
+        store.set('api:summoner', summoner)
 
         done(null, summoner)
       })

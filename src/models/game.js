@@ -5,7 +5,6 @@ let numCooldowns = 0
 export default {
   namespace: 'game',
   state: {
-    name: '',
     ennemies: []
   },
   effects: {
@@ -35,7 +34,6 @@ export default {
     }
   },
   reducers: {
-    name: (name, state) => ({ name }),
     ennemies: (ennemies, state) => ({ ennemies }),
     startCooldown: (uid, state) => ({
       ennemies: state.ennemies.map(ennemy => xtend(ennemy, {
