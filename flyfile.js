@@ -109,11 +109,24 @@ export async function serve() {
   })
 }
 
+export async function runAndroid() {
+  process.chdir(paths.build)
+  await cordova.run({ platforms: ['android']})
+  process.chdir(__dirname)
+}
+
+export async function runIos() {
+  process.chdir(paths.build)
+  await cordova.run({ platforms: ['ios'], options: { target: 'iPhone-6' }})
+  process.chdir(__dirname)
+}
+
 export async function setup() {
   await this.start('copyConfig')
   await mkdirp(paths.dist)
   process.chdir(paths.build)
   await cordova.platform('add', ['android', 'ios'])
+  process.chdir(__dirname)
 }
 
 export default async function() {

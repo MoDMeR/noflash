@@ -20,9 +20,8 @@
   }
 
   > .submit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    margin: 0 auto;
     border-radius: 4px;
     box-shadow: 0 2px 4px #333;
     width: 100%;
@@ -34,7 +33,6 @@
     color: desaturate(darken(color-get(primary), 30), 0);
 
     @include variant(loading) {
-      margin: 0 auto;
       border-radius: 50%;
       border: 3px solid transparent;
       border-top-color: color-get(primary);

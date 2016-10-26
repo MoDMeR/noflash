@@ -1,5 +1,5 @@
 .error-pane {
-  @include absolute($height: 3.25rem);
+  @include fixed($height: 3.25rem);
   display: flex;
   justify-content: center;
   align-items: center;

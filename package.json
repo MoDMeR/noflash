@@ -6,6 +6,8 @@
     "copy:config": "fly copyConfig",
     "clean": "fly clean",
     "dev": "fly",
+    "run:android": "fly runAndroid",
+    "run:ios": "fly runIos",
     "setup": "fly setup"
   },
   "devDependencies": {
