@@ -30,7 +30,7 @@ export default {
     summoner: (name, state, send, done) => {
       send('api:request', `${endpoints.summoner}/${name}`,
       (err, body) => {
-        if (403 === err)
+        if (403 === err || 404 === err)
           return done('Unknown summoner')
 
         const summoner = body[name.toLowerCase().replace(/ /g, '')]
