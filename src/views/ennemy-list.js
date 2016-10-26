@@ -58,8 +58,7 @@ const handleDragEnd = (e) => {
 }
 
 export default (game, prev, send) => html`
-  <ul class="ennemy-list"
-    onmousedown=${e => handleDragStart(e)}>
+  <ul class="ennemy-list">
     ${game.ennemies.map(ennemy => ennemyItem(ennemy, prev, send))}
   </ul>
 `
