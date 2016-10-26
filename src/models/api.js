@@ -7,9 +7,14 @@ import xtend from 'xtend'
 
 const proxyUrl = 'https://wt-ngryman-gmail_com-0.run.webtask.io/riot-proxy'
 
-const endpoints = {
-  summoner: '/api/lol/euw/v1.4/summoner/by-name',
-  ennemies: '/observer-mode/rest/consumer/getSpectatorGameInfo/EUW1'
+const endpoint = (name) => {
+  const region = store.get('app:region')
+  switch (name) {
+    case 'summoner':
+      return `/api/lol/${region}/v1.4/summoner/by-name`
+    case 'ennemies':
+      return `/observer-mode/rest/consumer/getSpectatorGameInfo/${region}1`
+  }
 }
 
 const uid = uniqueid()
@@ -33,7 +38,7 @@ export default {
       if (null != summoner && summoner.name === name)
         return done(null, summoner)
 
-      send('api:request', `${endpoints.summoner}/${name}`,
+      send('api:request', `${endpoint('summoner')}/${name}`,
       (err, body) => {
         if (403 === err || 404 === err)
           return done('Unknown summoner')
@@ -48,7 +53,7 @@ export default {
       })
     },
     ennemies: (summoner, state, send, done) => {
-      send('api:request', `${endpoints.ennemies}/${summoner.id}`,
+      send('api:request', `${endpoint('ennemies')}/${summoner.id}`,
       (err, body) => {
         if (404 === err)
           return done('No live game found')

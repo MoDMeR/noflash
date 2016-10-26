@@ -10,12 +10,17 @@ export default {
     tagline: 'Track summoner spells',
     loading: false,
     error: '',
-    summoner: store.get('app:summoner') || ''
+    summoner: store.get('app:summoner') || '',
+    region: store.get('app:region') || ''
   },
   effects: {
     summoner: (summoner, state, send, done) => {
       store.set('app:summoner', summoner)
       send('app:set', { summoner }, done)
+    },
+    region: (region, state, send, done) => {
+      store.set('app:region', region)
+      send('app:set', { region }, done)
     },
     loading: (data, state, send, done) => {
       send('app:set', { error: '', loading: true }, done)
