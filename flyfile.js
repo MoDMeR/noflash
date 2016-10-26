@@ -126,6 +126,7 @@ export async function setup() {
   await mkdirp(paths.dist)
   process.chdir(paths.build)
   await cordova.platform('add', ['android', 'ios'])
+  await cordova.plugin('add', 'cordova-plugin-whitelist')
   process.chdir(__dirname)
 }
 

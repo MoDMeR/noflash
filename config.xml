@@ -1,4 +1,8 @@
-<widget id="io.noflash" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget
+  xmlns="http://www.w3.org/ns/widgets"
+  xmlns:gap="http://phonegap.com/ns/1.0"
+  id="io.noflash"
+  version="0.0.1">
   <name>No Flash</name>
   <description>Track your summoner spells.</description>
   <author email="ngryman@gmail.com" href="http://ngryman.sh">
@@ -6,4 +10,12 @@
   </author>
   <content src="index.html" />
   <access origin="*"></access>
+
+  <platform name="ios" />
+  <platform name="android" />
+
+  <plugin name="cordova-plugin-whitelist" />
+
+  <preference name="orientation" value="portrait" />
+  <preference name="fullscreen" value="true" />
 </widget>

@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "fly build",
     "build:app": "fly buildApp",
     "build:sass": "fly buildSass",
     "copy:assets": "fly copyAssets",
