@@ -26,6 +26,6 @@ fastclick(document.body)
 
 document.addEventListener('deviceready', () => {
   document.addEventListener('backbutton', () => {
-    history.back()
+    history.go(-1)
   })
 })
