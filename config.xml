@@ -19,7 +19,7 @@
   <plugin name="cordova-plugin-statusbar" />
 
   <preference name="orientation" value="portrait" />
-  <preference name="HeaderColor" value="#121637" />
+  <preference name="HeaderColor" value="#24516b" />
   <preference name="StatusBarOverlaysWebView" value="true" />
-  <preference name="StatusBarBackgroundColor" value="#121637" />
+  <preference name="StatusBarBackgroundColor" value="#24516b" />
 </widget>
