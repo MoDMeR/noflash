@@ -3,7 +3,8 @@ $colors: (
   background2: #24516b,
   primary: #f6b352,
   highlight: #60a6d7,
-  text: #d8f2f3
+  text: #d8f2f3,
+  error: #E4152E
 );
 
 @function color-get($color) {

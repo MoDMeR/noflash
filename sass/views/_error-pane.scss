@@ -3,8 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(#E4152E, .8);
-  color: rgba(#F58593, .8);
+  background: rgba(color-get(error), .8);
+  color: lighten(color-get(error), 25);
   font-size: 1.2rem;
   font-weight: 400;
 }
