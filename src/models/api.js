@@ -40,7 +40,7 @@ export default {
 
       send('api:request', `${endpoint('summoner')}/${name}`,
       (err, body) => {
-        if (403 === err || 404 === err)
+        if (err > 400)
           return done('Unknown summoner')
 
         const summoner = body[name.toLowerCase().replace(/ /g, '')]
@@ -55,12 +55,13 @@ export default {
     ennemies: (summoner, state, send, done) => {
       send('api:request', `${endpoint('ennemies')}/${summoner.id}`,
       (err, body) => {
-        if (404 === err)
+        if (err > 400)
           return done('No live game found')
 
-        const { participants } = body
-        if (1 === participants.length)
+        if ('CLASSIC' !== body.gameMode || 'MATCHED_GAME' !== body.gameType)
           return done('Game mode not supported')
+
+        const { participants } = body
 
         const summonerTeam = participants
           .find(participant => summoner.name === participant.summonerName)
