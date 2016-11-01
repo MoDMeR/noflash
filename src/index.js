@@ -28,8 +28,4 @@ document.addEventListener('deviceready', () => {
   document.addEventListener('backbutton', () => {
     history.back()
   })
-
-  if (cordova.platformId == 'android') {
-    StatusBar.backgroundColorByHexString('#121637');
-  }
 })
