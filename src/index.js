@@ -23,3 +23,9 @@ app.router(route => [
 const tree = app.start()
 document.body.appendChild(tree)
 fastclick(document.body)
+
+document.addEventListener('deviceready', () => {
+  document.addEventListener('backbutton', () => {
+    history.back()
+  })
+})
