@@ -32,6 +32,9 @@ export default {
       errTimeoutId = setTimeout(() => {
         send('app:set', { error: '', loading: false }, done)
       }, 3000)
+    },
+    clear: (data, state, send, done) => {
+      send('app:set', { error: '', loading: false }, done)
     }
   },
   reducers: {

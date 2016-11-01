@@ -17,7 +17,10 @@ export default {
             if (err) return send('app:error', { err }, done)
 
             send('game:ennemies', ennemies, () => {
-              send('location:setLocation', { location: '/ingame' }, done)
+              send('app:clear', () => {
+                send('location:setLocation', { location: '/ingame' }, done)
+                history.pushState({}, null, '/ingame')
+              })
             })
           })
         })
