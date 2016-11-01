@@ -26,8 +26,6 @@ fastclick(document.body)
 
 document.addEventListener('deviceready', () => {
   document.addEventListener('backbutton', () => {
-    if ('#ingame' === location.hash) {
-      history.back()
-    }
+    history.back()
   })
 })
