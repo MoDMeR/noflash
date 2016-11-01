@@ -1,5 +1,7 @@
 import xtend from 'xtend'
 
+const spellAudio = new Audio('sounds/spell.ogg')
+
 let numCooldowns = 0
 
 export default {
@@ -67,6 +69,8 @@ export default {
             newSpell.cooldown = 0
             newSpell.state = 'available'
             numCooldowns--
+
+            spellAudio.play()
           }
 
           return newSpell
