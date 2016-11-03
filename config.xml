@@ -14,9 +14,10 @@
   <platform name="ios" />
   <platform name="android" />
 
-  <plugin name="cordova-plugin-whitelist" />
   <plugin name="cordova-plugin-headercolor" />
+  <plugin name="cordova-plugin-insomnia" />
   <plugin name="cordova-plugin-statusbar" />
+  <plugin name="cordova-plugin-whitelist" />
 
   <preference name="orientation" value="portrait" />
   <preference name="HeaderColor" value="#1f3f54" />

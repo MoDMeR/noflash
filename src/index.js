@@ -25,6 +25,8 @@ document.body.appendChild(tree)
 fastclick(document.body)
 
 document.addEventListener('deviceready', () => {
+  plugins.insomnia.keepAwake()
+
   document.addEventListener('backbutton', () => {
     history.back()
   })

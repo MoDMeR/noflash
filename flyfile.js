@@ -110,12 +110,14 @@ export async function serve() {
 }
 
 export async function runAndroid() {
+  await this.start('build')
   process.chdir(paths.build)
   await cordova.run({ platforms: ['android']})
   process.chdir(__dirname)
 }
 
 export async function runIos() {
+  await this.start('build')
   process.chdir(paths.build)
   await cordova.run({ platforms: ['ios'], options: { target: 'iPhone-6' }})
   process.chdir(__dirname)
@@ -126,9 +128,10 @@ export async function setup() {
   await mkdirp(paths.dist)
   process.chdir(paths.build)
   await cordova.platform('add', ['android', 'ios'])
-  await cordova.plugin('add', 'cordova-plugin-whitelist')
   await cordova.plugin('add', 'cordova-plugin-headercolor')
+  await cordova.plugin('add', 'cordova-plugin-insomnia')
   await cordova.plugin('add', 'cordova-plugin-statusbar')
+  await cordova.plugin('add', 'cordova-plugin-whitelist')
   process.chdir(__dirname)
 }
 
