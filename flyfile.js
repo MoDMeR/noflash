@@ -11,6 +11,7 @@ const paths = {
   app: 'src/**/*.js',
   appEntry: 'src/index.js',
   assets: 'assets/{,*/}*',
+  icons: 'icons',
   build: 'build',
   config: 'config.xml',
   sass: 'sass/**/*.scss',
@@ -23,6 +24,7 @@ export async function build() {
   await this.start('buildSass')
   await this.start('copyConfig')
   await this.start('copyAssets')
+  await this.start('copyIcons')
 }
 
 export async function buildApp() {
@@ -84,6 +86,12 @@ export async function copyAssets() {
 export async function copyConfig() {
   await this
     .source(paths.config)
+    .target(paths.build)
+}
+
+export async function copyIcons() {
+  await this
+    .source(paths.icons)
     .target(paths.build)
 }
 

@@ -6,6 +6,7 @@
     "build:sass": "fly buildSass",
     "copy:assets": "fly copyAssets",
     "copy:config": "fly copyConfig",
+    "copy:icons": "fly copyIcons",
     "clean": "fly clean",
     "dev": "fly",
     "run:android": "fly runAndroid",

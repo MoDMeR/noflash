@@ -11,9 +11,6 @@
   <content src="index.html" />
   <access origin="*"></access>
 
-  <platform name="ios" />
-  <platform name="android" />
-
   <plugin name="cordova-plugin-headercolor" />
   <plugin name="cordova-plugin-insomnia" />
   <plugin name="cordova-plugin-statusbar" />
@@ -23,4 +20,15 @@
   <preference name="HeaderColor" value="#1f3f54" />
   <preference name="StatusBarOverlaysWebView" value="true" />
   <preference name="StatusBarBackgroundColor" value="#1f3f54" />
+
+  <platform name="ios" />
+
+  <platform name="android">
+    <icon src="icons/launcher-ldpi.png" qualifier="ldpi" />
+    <icon src="icons/launcher-mdpi.png" qualifier="mdpi" />
+    <icon src="icons/launcher-hdpi.png" qualifier="hdpi" />
+    <icon src="icons/launcher-xhdpi.png" qualifier="xhdpi" />
+    <icon src="icons/launcher-xxhdpi.png" qualifier="xxhdpi" />
+    <icon src="icons/launcher-xxhdpi.png" qualifier="xxxhdpi" />
+  </platform>
 </widget>
