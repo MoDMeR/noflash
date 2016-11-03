@@ -24,11 +24,11 @@
   <platform name="ios" />
 
   <platform name="android">
-    <icon src="icons/launcher-ldpi.png" qualifier="ldpi" />
-    <icon src="icons/launcher-mdpi.png" qualifier="mdpi" />
-    <icon src="icons/launcher-hdpi.png" qualifier="hdpi" />
-    <icon src="icons/launcher-xhdpi.png" qualifier="xhdpi" />
-    <icon src="icons/launcher-xxhdpi.png" qualifier="xxhdpi" />
-    <icon src="icons/launcher-xxhdpi.png" qualifier="xxxhdpi" />
+    <icon src="icon-ldpi.png" qualifier="ldpi" />
+    <icon src="icon-mdpi.png" qualifier="mdpi" />
+    <icon src="icon-hdpi.png" qualifier="hdpi" />
+    <icon src="icon-xhdpi.png" qualifier="xhdpi" />
+    <icon src="icon-xxhdpi.png" qualifier="xxhdpi" />
+    <icon src="icon-xxhdpi.png" qualifier="xxxhdpi" />
   </platform>
 </widget>
