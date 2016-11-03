@@ -11,7 +11,7 @@ const paths = {
   app: 'src/**/*.js',
   appEntry: 'src/index.js',
   assets: 'assets/{,*/}*',
-  icons: 'icons',
+  icons: 'icons/*.png',
   build: 'build',
   config: 'config.xml',
   sass: 'sass/**/*.scss',
