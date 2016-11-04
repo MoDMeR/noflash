@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>No Flash</title>
+  <meta name="description" content="Track summoner spells in League of Legends">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="No Flash">
+  <meta property="og:image" content="images/noflash.jpg">
+  <meta property="og:description" content="Track summoner spells in League of Legends">
+  <meta property="og:url" content="http://ngryman.sh/noflash">
+  <meta name="twitter:card" content="photo">
+  <meta name="twitter:site" content="@ngryman">
+  <meta name="twitter:title" content="No Flash">
+  <meta name="twitter:description" content="Track summoner spells in League of Legends">
+  <meta name="twitter:image" content="images/noflash.jpg">
+  <meta name="twitter:url" content="http://ngryman.sh/noflash">
+
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <svg style="display: none">
+    <symbol id="icon-logo" viewBox="50 -3 97 146">
+      <path d="M135.413143,53.3554182 L111.027248,53.3554182 L111.027248,9.45610952 C111.027248,3.02599772 108.448158,0.89306349 106.276088,0.24339912 C104.131412,-0.402351609 100.812645,-0.0814330647 97.2708002,5.21763655 L81.7806099,28.2181034 C79.252398,31.9947668 75.5774893,37.3760229 72.3565629,42.0841327 L53.398887,69.5344092 C49.9548831,74.5869194 50.9685161,78.2266053 51.8764807,79.9446936 C52.8079272,81.7097456 55.3361392,84.6723717 61.7545101,84.6723717 L87.5414892,84.6723717 L87.5414892,130.657651 C87.5414892,132.590989 87.5414892,138.477105 91.9599896,139.81557 C92.4844175,139.97603 92.9931908,140.050389 93.4823959,140.050389 C97.086859,140.050389 99.6894302,136.16023 100.656099,134.712183 L115.42618,111.645184 L116.420245,110.161914 C120.028621,104.765003 125.233764,96.9846856 128.556445,92.1082892 L143.780507,69.5500637 C146.386992,65.7068685 146.899679,61.6445093 145.181591,58.3883602 C143.486984,55.1909157 139.929485,53.3554182 135.413143,53.3554182 Z"></path>
+    </symbol>
+    <symbol id="icon-triangle" viewBox="57 49 35 43">
+      <path d="M58,51.2428594 C58,50.1422336 58.7578089,49.7236305 59.6976979,50.3110612 L90.3023021,69.4389388 C91.2399148,70.0249467 91.2421911,70.9736305 90.3023021,71.5610612 L59.6976979,90.6889388 C58.7600852,91.2749467 58,90.8623271 58,89.7571406 L58,51.2428594 Z" stroke-linecap="round"></path>
+    </symbol>
+  </svg>
+
+  <main>
+    <div class="hero-block">
+      <svg class="logo" width="96px" height="141px">
+        <use xlink:href="#icon-logo"></use>
+      </svg>
+      <h1 class="title">noflash</h1>
+    </div>
+    <div class="links-block">
+      <a class="link-anchor -video" href="https://youtu.be/5i18jKkzSn0">
+        <svg class="icon">
+	        <use xlink:href="#icon-triangle"></use>
+        </svg>
+        <span class="label">Video</span>
+      </a>
+      <a class="link-anchor -download" href="https://play.google.com/apps/testing/io.noflash">
+        <svg class="icon">
+	        <use xlink:href="#icon-triangle"></use>
+        </svg>
+        <span class="label">Download</span>
+      </a>
+    </div>
+  </main>
+
+  <div class="video-modal"></div>
+
+  <script>
+    /** Initial ready state */
+
+    var bg = new Image()
+    bg.src = 'images/bg.jpg'
+    bg.addEventListener('load', function() {
+      document.body.classList.add('-ready')
+    })
+
+    /** Links beam fx */
+
+    function onLinkAnimationEnd() {
+      this.classList.remove('-active')
+    }
+
+    var links = document.querySelectorAll('.link-anchor')
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i]
+
+      link.addEventListener('click', function() {
+        this.classList.add('-active')
+      })
+
+      link.addEventListener('webkitAnimationEnd', onLinkAnimationEnd)
+      link.addEventListener('mozAnimationEnd', onLinkAnimationEnd)
+      link.addEventListener('animationend', onLinkAnimationEnd)
+    }
+
+    /** Video */
+
+    var videoLink = document.querySelector('.link-anchor.-video')
+    var videoModal = document.querySelector('.video-modal')
+    var video = document.querySelector('.video')
+    var body = document.body
+
+    function onModalReveal(e) {
+      videoModal.innerHTML = '<iframe class="video" src="https://www.youtube.com/embed/5i18jKkzSn0?rel=0&amp;controls=0&amp;showinfo=0&autoplay=1" frameborder="0"></iframe>'
+    }
+
+    videoLink.addEventListener('click', function(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      body.classList.add('-modal')
+    })
+
+    body.addEventListener('click', function() {
+      if (body.classList.contains('-modal')) {
+        body.classList.remove('-modal')
+        videoModal.innerHTML = ''
+      }
+    })
+
+    videoModal.addEventListener('webkitAnimationEnd', onModalReveal)
+  </script>
+
+  <script type="application/ld+json">
+    {
+     "@context": "http://schema.org/",
+     "@type": "MobileApplication",
+     "name": "No Flash",
+     "description": "Track summoner spells in League of Legends",
+     "image": "http://ngryman.sh/noflash/images/noflash.jpg",
+     "applicationCategory": "League Of Legends Companion",
+     "url": "http://ngryman.sh/noflash",
+     "video": {
+       "@type": "VideoObject",
+       "url": "https://youtu.be/5i18jKkzSn0"
+     },
+     "downloadUrl": "https://play.google.com/store/apps/details?id=io.noflash",
+     "operatingSystem": "Android, iOS",
+     "supportingData": {
+       "@type": "DataFeed",
+       "dataFeedElement": [
+         {
+           "@type": "Book",
+           "name": "Anna Karenina",
+           "sameAs": "https://en.wikipedia.org/wiki/Anna_Karenina"
+         },
+         {
+           "@type": "Book",
+           "name": "Pride and Prejudice",
+           "sameAs": "https://en.wikipedia.org/wiki/Pride_and_Prejudice"
+         },
+         {
+           "@type": "Book",
+           "name": "My Bondage and My Freedom",
+           "sameAs": "https://en.wikipedia.org/wiki/My_Bondage_and_My_Freedom"
+         }
+       ]
+     }
+    }
+  </script>
+</body>
+</html>
