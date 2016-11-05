@@ -23,7 +23,8 @@ export default {
   namespace: 'api',
   effects: {
     request: (url, state, send, done) => {
-      return xhr(`${proxyUrl}?url=${url}`, { json: true },
+      const region = store.get('app:region')
+      return xhr(`${proxyUrl}?url=${url}&region=${region}`, { json: true },
       (err, res, body) => {
         if (null == body.status) {
           done(null, body)
