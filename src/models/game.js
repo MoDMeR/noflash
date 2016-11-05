@@ -15,8 +15,13 @@ export default {
         send('api:summoner', name, (err, summoner) => {
           if (err) return send('app:error', { err }, done)
 
+          mixpanel.identify(summoner.id)
+          mixpanel.people.set({ '$first_name': summoner.name })
+
           send('api:ennemies', summoner, (err, ennemies) => {
             if (err) return send('app:error', { err }, done)
+
+            mixpanel.track('game:init')
 
             send('game:ennemies', ennemies, () => {
               send('app:clear', () => {
@@ -44,6 +49,8 @@ export default {
       ennemies: state.ennemies.map(ennemy => xtend(ennemy, {
         spells: ennemy.spells.map(spell => {
           if (spell.uid === uid) {
+            mixpanel.track('game:cooldown:start', { spell: spell.id })
+
             return xtend({}, spell, {
               state: 'cooldown',
               cooldown: spell.refCooldown - 1
@@ -60,6 +67,10 @@ export default {
         spells: ennemy.spells.map(spell => {
           if ('cooldown' !== spell.state) return spell
           if (data.uid && spell.uid !== data.uid) return spell
+
+          if (data.amount > 1) {
+            mixpanel.track('game:cooldown:decrement', { spell: spell.id })
+          }
 
           const newSpell = xtend({}, spell, {
             cooldown: spell.cooldown - data.amount
@@ -80,7 +91,9 @@ export default {
     toggleFocus: (data, state) => ({
       ennemies: state.ennemies.map(ennemy => {
         if (ennemy.name === data.name) {
-          return xtend({}, ennemy, { focused: !ennemy.focused })
+          const focused = !ennemy.focused
+          mixpanel.track('game:focus', { focused })
+          return xtend({}, ennemy, { focused })
         }
         else {
           return ennemy
