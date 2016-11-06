@@ -26,9 +26,9 @@ export default {
       send('app:set', { error: '', loading: true }, done)
     },
     error: (data, state, send, done) => {
-      send('app:set', { error: data.err, loading: false }, done)
+      send('app:set', { error: data.err.message, loading: false }, done)
 
-      mixpanel.track('app:error', { error: data.err })
+      mixpanel.track('app:error', data.err)
 
       clearTimeout(errTimeoutId)
       errTimeoutId = setTimeout(() => {

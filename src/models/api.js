@@ -17,6 +17,10 @@ const endpoint = (name) => {
   }
 }
 
+const error = (message, url, status, done) => {
+  done({ message, url, status })
+}
+
 const uid = uniqueid()
 
 export default {
@@ -36,33 +40,36 @@ export default {
     },
     summoner: (name, state, send, done) => {
       const summoner = store.get('api:summoner')
+
       if (null != summoner && summoner.name === name)
         return done(null, summoner)
 
-      send('api:request', `${endpoint('summoner')}/${name}`,
-      (err, body) => {
+      const url = `${endpoint('summoner')}/${name}`
+
+      send('api:request', url, (err, body) => {
         if (err > 400)
-          return done('Unknown summoner')
+          return error('Unknown summoner', url, err, done)
 
         const summoner = body[name.toLowerCase().replace(/ /g, '')]
         if (!summoner)
-          return done('No summoner found')
+          return error('No summoner found', url, err, done)
 
         store.set('api:summoner', summoner)
 
         done(null, summoner)
       })
     },
-    ennemies: (summoner, state, send, done) => {
-      send('api:request', `${endpoint('ennemies')}/${summoner.id}`,
-      (err, body) => {
+    game: (summoner, state, send, done) => {
+      const url = `${endpoint('ennemies')}/${summoner.id}`
+
+      send('api:request', url, (err, body) => {
         if (err > 400)
-          return done('No live game found')
+          return error('No live game found', url, err, done)
 
         if ('CLASSIC' !== body.gameMode || 'MATCHED_GAME' !== body.gameType)
-          return done('Game mode not supported')
+          return error('Game mode not supported', url, err, done)
 
-        const { participants } = body
+        const { gameId, participants } = body
 
         const summonerTeam = participants
           .find(participant => summoner.name === participant.summonerName)
@@ -79,7 +86,7 @@ export default {
             ]
           }))
 
-        done(null, ennemies)
+        done(null, { gameId, ennemies })
       })
     }
   }

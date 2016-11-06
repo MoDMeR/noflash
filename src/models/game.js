@@ -7,6 +7,7 @@ let numCooldowns = 0
 export default {
   namespace: 'game',
   state: {
+    gameId: 0,
     ennemies: []
   },
   effects: {
@@ -15,16 +16,17 @@ export default {
         send('api:summoner', name, (err, summoner) => {
           if (err) return send('app:error', { err }, done)
 
-          mixpanel.identify(summoner.id)
-          mixpanel.people.set({ '$first_name': summoner.name })
+          mixpanel.people.set('$first_name', summoner.name)
 
-          send('api:ennemies', summoner, (err, ennemies) => {
+          send('api:game', summoner, (err, game) => {
             if (err) return send('app:error', { err }, done)
 
-            mixpanel.track('game:init')
-
-            send('game:ennemies', ennemies, () => {
+            send('game:set', game, () => {
               send('app:clear', () => {
+                mixpanel.people.increment('gamesPlayed')
+                mixpanel.people.union('gamesId', game.gameId)
+                mixpanel.track('game:init', { gameId: game.gameId })
+
                 send('location:setLocation', { location: '/ingame' }, done)
                 history.pushState({}, null, '/ingame')
               })
@@ -44,12 +46,15 @@ export default {
     }
   },
   reducers: {
-    ennemies: (ennemies, state) => ({ ennemies }),
+    set: (game, state) => game,
     startCooldown: (uid, state) => ({
       ennemies: state.ennemies.map(ennemy => xtend(ennemy, {
         spells: ennemy.spells.map(spell => {
           if (spell.uid === uid) {
-            mixpanel.track('game:cooldown:start', { spell: spell.id })
+            mixpanel.track('game:cooldown:start', {
+              gameId: state.gameId,
+              spell: spell.id
+            })
 
             return xtend({}, spell, {
               state: 'cooldown',
@@ -69,7 +74,10 @@ export default {
           if (data.uid && spell.uid !== data.uid) return spell
 
           if (data.amount > 1) {
-            mixpanel.track('game:cooldown:decrement', { spell: spell.id })
+            mixpanel.track('game:cooldown:decrement', {
+              gameId: state.gameId,
+              spell: spell.id
+            })
           }
 
           const newSpell = xtend({}, spell, {
@@ -92,7 +100,11 @@ export default {
       ennemies: state.ennemies.map(ennemy => {
         if (ennemy.name === data.name) {
           const focused = !ennemy.focused
-          mixpanel.track('game:focus', { focused })
+          mixpanel.track('game:focus', {
+            gameId: state.gameId,
+            focused
+          })
+
           return xtend({}, ennemy, { focused })
         }
         else {

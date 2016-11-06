@@ -136,6 +136,7 @@ export async function setup() {
   await mkdirp(paths.dist)
   process.chdir(paths.build)
   await cordova.platform('add', ['android', 'ios'])
+  await cordova.plugin('add', 'cordova-plugin-device')
   await cordova.plugin('add', 'cordova-plugin-headercolor')
   await cordova.plugin('add', 'cordova-plugin-insomnia')
   await cordova.plugin('add', 'cordova-plugin-statusbar')

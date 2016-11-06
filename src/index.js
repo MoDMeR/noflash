@@ -20,14 +20,25 @@ app.router(route => [
   route('/ingame', ingamePage)
 ])
 
-const tree = app.start()
-document.body.appendChild(tree)
-fastclick(document.body)
+const start = (uuid) => {
+  mixpanel.identify(uuid)
+  mixpanel.people.increment('sessions')
 
-document.addEventListener('deviceready', () => {
-  plugins.insomnia.keepAwake()
+  const tree = app.start()
+  document.body.appendChild(tree)
+  fastclick(document.body)
+}
 
-  document.addEventListener('backbutton', () => {
-    history.back()
+if (window.cordova) {
+  document.addEventListener('deviceready', () => {
+    start(device.uuid)
+
+    plugins.insomnia.keepAwake()
+    document.addEventListener('backbutton', () => {
+      history.back()
+    })
   })
-})
+}
+else {
+  start(-1)
+}

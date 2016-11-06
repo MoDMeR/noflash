@@ -11,6 +11,7 @@
   <content src="index.html" />
   <access origin="*"></access>
 
+  <plugin name="cordova-plugin-device" />
   <plugin name="cordova-plugin-headercolor" />
   <plugin name="cordova-plugin-insomnia" />
   <plugin name="cordova-plugin-statusbar" />
