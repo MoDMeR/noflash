@@ -11,7 +11,7 @@ export default {
     loading: false,
     error: '',
     summoner: store.get('app:summoner') || '',
-    region: store.get('app:region') || ''
+    region: store.get('app:region') || 'EUW'
   },
   effects: {
     summoner: (summoner, state, send, done) => {
