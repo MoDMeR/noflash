@@ -1,31 +1,27 @@
 .welcome-form {
+  opacity: 0;
+  animation: welcome-form-appear 1s forwards 1.2s;
+
   > .fieldset {
     position: relative;
   }
 
-  > .fieldset > .label {
-    font-size: 1.2rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: color-get(text);
-
-    > .input {
-      display: block;
-      margin: 1rem 0 3rem 0;
-      border-radius: 4px;
-      border: 0;
-      padding: 0 1rem;
-      width: 100%;
-      height: 3.25rem;
-      background: rgba(#fff, .1);
-      font-size: 1rem;
-      color: #fff;
-    }
+  > .fieldset > .input {
+    display: block;
+    margin: 1rem 0 1.4rem 0;
+    border-radius: 4px;
+    border: 0;
+    padding: 0 1rem;
+    width: 100%;
+    height: 3.25rem;
+    background: rgba(#fff, .1);
+    font-size: 1rem;
+    color: #fff;
   }
 
   > .fieldset > .regions {
     position: absolute;
-    top: 2.5rem;
+    top: 1rem;
     right: 0;
     margin: 0 1rem;
     height: 3.2rem;
@@ -54,13 +50,20 @@
       width: 4.5rem;
       background: transparent;
       color: transparent;
-      animation: welcome-load 1s linear infinite;
+      animation: welcome-form-loading 1s linear infinite;
     }
   }
 }
 
-@keyframes welcome-load {
-  100% {
+@keyframes welcome-form-loading {
+  to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes welcome-form-appear {
+  to {
+    transform: none;
+    opacity: 1;
   }
 }

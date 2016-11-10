@@ -1,16 +1,34 @@
 .welcome-page {
   display: flex;
   flex-direction: column;
-  padding: 0 1.4rem;
-  background:
-    linear-gradient(-45deg, color-get(background1), rgba(color-get(background2), .8)),
-    url(images/bg.png);
+  padding: 1.4rem;
+  background: radial-gradient(rgba(13, 236, 240, .2), rgba(240, 13, 230, .1)),
+    linear-gradient(rgba(42, 48, 90, .95), rgba(0, 0, 0, .98));
 
-  > .welcome-header {
-    flex: 2;
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    transform: scale(1.3);
+    transform-origin: top center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(images/bg.png);
+    opacity: 0;
+    backface-visibility: hidden;
+    animation: welcome-page-appear 1s forwards;
   }
 
-  > .welcome-form {
+  > .welcome-header {
     flex: 1;
+  }
+}
+
+@keyframes welcome-page-appear {
+  to {
+    transform: none;
+    opacity: 1;
   }
 }

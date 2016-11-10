@@ -1,6 +1,13 @@
 @font-face {
   font-family: 'Lato';
   font-style: normal;
+  font-weight: 100;
+  src: local('Lato'), url(fonts/lato-thin.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
   font-weight: 200;
   src: local('Lato'), url(fonts/lato-light.woff) format('woff');
 }
@@ -10,11 +17,4 @@
   font-style: normal;
   font-weight: 400;
   src: local('Lato'), url(fonts/lato-regular.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'Ailerons';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Ailerons'), url(fonts/ailerons.woff) format('woff');
 }

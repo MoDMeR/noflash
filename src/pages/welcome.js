@@ -40,20 +40,20 @@ const renderError = (error) => html`
 export default (state, prev, send) => html`
   <main class="welcome-page">
     <div class="welcome-header">
-      <h1 class="title"><em>No</em>Flash</h1>
-      <blockquote class="tagline">${state.app.tagline}</blockquote>
+      <svg class="logo" width="96px" height="141px">
+        <use xlink:href="#icon-logo">
+      </svg>
+      <h1 class="title">noflash</h1>
     </div>
     <form class="welcome-form ${classVariants(state)}"
       onsubmit=${e => handleSubmit(e, state, send)}}>
       <fieldset class="fieldset">
-        <label class="label">
-          Summoner name
-          <input
-            class="input"
-            value=${state.app.summoner}
-            ${state.app.loading ? 'disabled' : ''}
-            oninput=${e => handleInput(e, state, send)} />
-        </label>
+        <input
+          class="input"
+          value=${state.app.summoner}
+          placeholder="Summoner name"
+          ${state.app.loading ? 'disabled' : ''}
+          oninput=${e => handleInput(e, state, send)} />
         <select class="regions" onchange=${e => handleChange(e, state, send)}>
           ${regions.map(region => renderRegion(region, state))}
         </select>
