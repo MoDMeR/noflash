@@ -26,6 +26,7 @@ const start = (uuid) => {
 
   const tree = app.start()
   document.body.appendChild(tree)
+  document.body.classList.add('-ready')
   fastclick(document.body)
 }
 

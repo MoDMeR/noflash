@@ -2,7 +2,8 @@ html {
   box-sizing: border-box;
   height: 100%;
   font-size: 3.5vw;
-  background: color-get(background1);
+  background: radial-gradient(rgba(13, 236, 240, .2), rgba(240, 13, 230, .1)),
+    linear-gradient(rgba(42, 48, 90, .95), rgba(0, 0, 0, .98));
 }
 
 *, *::before, *::after {

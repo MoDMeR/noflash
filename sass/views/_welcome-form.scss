@@ -1,6 +1,9 @@
 .welcome-form {
   opacity: 0;
-  animation: welcome-form-appear 1s forwards 1.2s;
+
+  .-ready & {
+    animation: welcome-form-appear 1s forwards 1.2s;
+  }
 
   > .fieldset {
     position: relative;

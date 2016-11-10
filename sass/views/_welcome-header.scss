@@ -12,7 +12,10 @@
     stroke-dashoffset: 390;
     opacity: 0;
     backface-visibility: hidden;
-    animation: welcome-header-logo-appear 800ms linear forwards 600ms;
+
+    .-ready & {
+      animation: welcome-header-logo-appear 800ms linear forwards 600ms;
+    }
   }
 
   > .title {
@@ -23,7 +26,10 @@
     color: #fff;
     opacity: 0;
     backface-visibility: hidden;
-    animation: welcome-header-title-appear 800ms forwards 800ms;
+
+    .-ready & {
+      animation: welcome-header-title-appear 800ms forwards 800ms;
+    }
   }
 }
 
