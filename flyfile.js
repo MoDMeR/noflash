@@ -32,18 +32,25 @@ export async function buildApp() {
     .source(paths.appEntry)
     // XXX: wait for https://github.com/MadcapJake/fly-browserify/issues/8
     .filter((source, options) => {
-      const compiler = browserify({
-        debug: true,
+      const compilerOpts = {
         plugin: ['bundle-collapser/plugin'],
         transform: [
           ['unassertify', { global: true }],
-          [ 'uglifyify', { global: true }],
           ['babelify', {
             presets: ['es2015'],
             plugins: ['root-import']
           }]
         ]
-      })
+      }
+
+      if ('production' === process.env.NODE_ENV) {
+        compilerOpts.transform.push(['uglifyify', { global: true }])
+      }
+      else {
+        compilerOpts.debug = true
+      }
+
+      const compiler = browserify(compilerOpts)
 
       return new Promise((resolve, reject) => {
         this.unwrap(files => {
