@@ -1,7 +1,9 @@
+import autoprefixer from 'autoprefixer'
 import browserify from 'browserify'
 import browserSync from 'browser-sync'
 import mkdirp from 'mkdirp-then'
 import path from 'path'
+import postcss from 'postcss'
 import { cordova as cordovaLib } from 'cordova-lib'
 import zip from 'connect-phonegap/lib/middleware/zip'
 
@@ -75,6 +77,12 @@ export async function buildSass() {
     .sass({
       includePaths: ['sass', 'node_modules'],
       outputStyle: 'compressed'
+    })
+    .filter(async (source, options) => {
+      const opts = { browsers: ['android >= 4.4'] }
+
+      const data = await postcss([autoprefixer(opts)]).process(source)
+      return data.css
     })
     .target(paths.dist)
 }
