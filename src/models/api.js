@@ -1,4 +1,5 @@
 import champions from 'lol-champions'
+import find from 'array-find'
 import spells from 'lol-spells'
 import store from 'store'
 import uniqueid from 'uniqueid'
@@ -71,9 +72,9 @@ export default {
 
         const { gameId, participants } = body
 
-        const summonerTeam = participants
-          .find(participant => summoner.name === participant.summonerName)
-          .teamId
+        const summonerTeam = find(participants, participant =>
+          summoner.name === participant.summonerName
+        ).teamId
 
         const ennemies = participants
           .filter(participant => participant.teamId !== summonerTeam)
