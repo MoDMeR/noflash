@@ -7,6 +7,10 @@ import gameModel from '~/models/game'
 import welcomePage from '~/pages/welcome'
 import ingamePage from '~/pages/ingame'
 
+window.onerror = function(message, file, line) {
+  mixpanel.track('js:err', { message, file, line })
+}
+
 const app = choo()
 app.use(log())
 
