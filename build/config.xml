@@ -2,7 +2,7 @@
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:gap="http://phonegap.com/ns/1.0"
   id="io.noflash"
-  version="0.2.0">
+  version="0.2.1">
   <name>No Flash</name>
   <description>Track summoner spells.</description>
   <author email="ngryman@gmail.com" href="http://ngryman.sh">
