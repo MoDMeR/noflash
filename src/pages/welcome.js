@@ -13,7 +13,7 @@ const handleSubmit = (e, state, send) => {
     send('game:fetch', state.app.summoner)
   }
   else {
-    send('app:error', 'Empty summoner name')
+    send('app:error', { err: new Error('Empty summoner name') })
   }
 }
 
