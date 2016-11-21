@@ -94,11 +94,11 @@ export default {
 }
 
 function createChampion(id) {
-  return champions.find(c => c.key === String(id))
+  return find(champions, c => c.key === String(id))
 }
 
 function createSpell(id) {
-  const spell = spells.find(s => s.key === String(id))
+  const spell = find(spells, s => s.key === String(id))
   return xtend({}, spell, {
     uid: uid(),
     state: 'available',
