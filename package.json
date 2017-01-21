@@ -32,7 +32,7 @@
     "fly-esnext": "^2.0.0",
     "fly-sass": "^2.0.0",
     "lol-champions": "^6.21.1",
-    "lol-spells": "^6.21.1",
+    "lol-spells": "^7.1.0",
     "mkdirp-then": "^1.2.0",
     "phonegap": "^6.3.4",
     "postcss": "^5.2.5",
