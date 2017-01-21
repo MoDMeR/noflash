@@ -22,7 +22,7 @@
     "browser-sync": "^2.17.3",
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
-    "choo": "^4.0.0",
+    "choo": "^4.1.0",
     "choo-log": "3.0.0",
     "classnames": "^2.2.5",
     "closest": "0.0.1",
