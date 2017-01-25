@@ -34,7 +34,7 @@
     "lol-champions": "^6.21.1",
     "lol-spells": "^6.21.1",
     "mkdirp-then": "^1.2.0",
-    "phonegap": "^6.3.4",
+    "phonegap": "^6.4.3",
     "postcss": "^5.2.5",
     "sass-dry": "^0.3.0",
     "store": "^1.3.20",
