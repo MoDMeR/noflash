@@ -30,7 +30,7 @@
     "fastclick": "^1.0.6",
     "fly": "^2.0.0",
     "fly-esnext": "^2.0.0",
-    "fly-sass": "^2.0.0",
+    "fly-sass": "^2.1.0",
     "lol-champions": "^6.21.1",
     "lol-spells": "^6.21.1",
     "mkdirp-then": "^1.2.0",
